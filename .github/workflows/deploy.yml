@@ -4,7 +4,8 @@ on:
     branches:
       - main
       - dev
-
+env:
+  MONGODB_DB_NAME: gha-demo
 jobs:
   horusec-security:
     name: horusec-security
@@ -17,10 +18,7 @@ jobs:
     - name: Running Horusec Security
       run: |
         curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest
-        horusec start -p="./" -e="true" 
-env:
-  MONGODB_DB_NAME: gha-demo
-
+        horusec start -p="./" -e="true"
   test:
     environment: inetplace
     env:
@@ -46,9 +44,8 @@ env:
       - name: Output information
         run: | 
           echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
-
   deploy:
-    needs: test
+    needs: test, horusec-security
     runs-on: ubuntu-latest
     steps:
       - name: Output information
