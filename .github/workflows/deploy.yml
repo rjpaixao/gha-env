@@ -45,7 +45,7 @@ jobs:
         run: | 
           echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
   deploy:
-    needs: test, horusec-security
+    needs: [test, horusec-security]
     runs-on: ubuntu-latest
     steps:
       - name: Output information
